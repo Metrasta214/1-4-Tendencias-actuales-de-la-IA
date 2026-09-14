@@ -1,0 +1,14 @@
+[project]
+name = "linguaai-traductor-multimodal"
+version = "1.0.0"
+description = "Traductor multimodal español-inglés con FastAPI y OpenAI"
+requires-python = "~=3.12.0"
+dependencies = [
+  "fastapi>=0.115,<1",
+  "uvicorn[standard]>=0.30,<1",
+  "python-multipart>=0.0.9,<1",
+  "python-dotenv>=1.0,<2",
+  "openai>=1.99,<2",
+  "pypdf>=5,<7",
+  "python-docx>=1.1,<2"
+]
