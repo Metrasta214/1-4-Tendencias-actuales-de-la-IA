@@ -29,10 +29,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        # GitHub Pages
         "https://metrasta214.github.io",
-
-        # Desarrollo local
         "http://localhost:5500",
         "http://127.0.0.1:5500",
         "http://localhost:3000",
@@ -57,10 +54,6 @@ image_processor = None
 
 
 def get_services():
-    """
-    Inicializa los servicios de OpenAI solamente cuando
-    alguno de los endpoints que necesita IA es utilizado.
-    """
 
     global translator_service
     global audio_processor
@@ -123,16 +116,13 @@ class ChatRequest(TranslationRequest):
 
 
 # ============================================================
-# VALIDACIONES
+# VALIDACIÓN DE IDIOMAS
 # ============================================================
 
 def ensure_different_languages(
     source_language: str,
     target_language: str
 ):
-    """
-    Evita solicitar una traducción del mismo idioma al mismo idioma.
-    """
 
     if source_language == target_language:
 
@@ -172,7 +162,7 @@ def health():
 
 
 # ============================================================
-# TRADUCCIÓN DE TEXTO
+# TRADUCCIÓN
 # ============================================================
 
 @app.post("/api/translate")
@@ -276,7 +266,7 @@ async def audio(
     try:
 
         # ----------------------------------------------------
-        # VALIDAR IDIOMAS
+        # IDIOMAS
         # ----------------------------------------------------
 
         ensure_different_languages(
@@ -285,7 +275,7 @@ async def audio(
         )
 
         # ----------------------------------------------------
-        # VALIDAR ARCHIVO
+        # ARCHIVO
         # ----------------------------------------------------
 
         contents = await file.read()
@@ -297,6 +287,10 @@ async def audio(
                 detail="El archivo de audio está vacío."
             )
 
+        # ----------------------------------------------------
+        # VALIDACIÓN
+        # ----------------------------------------------------
+
         validator.validate_upload(
             filename=file.filename or "",
             content_type=file.content_type or "",
@@ -305,7 +299,7 @@ async def audio(
         )
 
         # ----------------------------------------------------
-        # OBTENER SERVICIO DE AUDIO
+        # SERVICIO
         # ----------------------------------------------------
 
         _, audio_service, _, _ = get_services()
@@ -317,7 +311,7 @@ async def audio(
             )
 
         # ----------------------------------------------------
-        # PROCESAR AUDIO
+        # PROCESAMIENTO
         # ----------------------------------------------------
 
         result = audio_service.process(
@@ -326,10 +320,6 @@ async def audio(
             source_language=source_language,
             target_language=target_language
         )
-
-        # ----------------------------------------------------
-        # VALIDAR RESULTADO
-        # ----------------------------------------------------
 
         if not result:
 

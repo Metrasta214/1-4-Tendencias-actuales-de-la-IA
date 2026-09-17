@@ -7,21 +7,12 @@ from .translator import Translator
 
 class AudioProcessor:
     """
-    Procesa archivos de audio.
-
-    Flujo:
-    1. Transcribe el audio.
-    2. Traduce la transcripción.
-    3. Genera audio con la traducción.
+    Transcribe, traduce y genera el audio resultante.
     """
 
     def __init__(self, translator: Translator):
 
         self.translator = translator
-
-        # ----------------------------------------------------
-        # MODELOS DE OPENAI
-        # ----------------------------------------------------
 
         self.transcription_model = os.getenv(
             "OPENAI_TRANSCRIPTION_MODEL",
@@ -38,15 +29,7 @@ class AudioProcessor:
             "alloy"
         )
 
-        # ----------------------------------------------------
-        # CLIENTE OPENAI
-        # ----------------------------------------------------
-
         self.client = translator.client
-
-    # ========================================================
-    # PROCESAR AUDIO
-    # ========================================================
 
     def process(
         self,
@@ -56,9 +39,9 @@ class AudioProcessor:
         target_language
     ):
 
-        # ----------------------------------------------------
-        # VALIDAR CONTENIDO
-        # ----------------------------------------------------
+        # ====================================================
+        # VALIDAR AUDIO
+        # ====================================================
 
         if not content:
 
@@ -66,9 +49,9 @@ class AudioProcessor:
                 "El contenido del audio está vacío."
             )
 
-        # ----------------------------------------------------
-        # DETERMINAR IDIOMA
-        # ----------------------------------------------------
+        # ====================================================
+        # IDIOMA
+        # ====================================================
 
         language_name = (
             "Spanish"
@@ -76,9 +59,9 @@ class AudioProcessor:
             else "English"
         )
 
-        # ----------------------------------------------------
-        # CREAR BUFFER
-        # ----------------------------------------------------
+        # ====================================================
+        # PREPARAR ARCHIVO
+        # ====================================================
 
         file_buffer = io.BytesIO(content)
 
@@ -93,10 +76,7 @@ class AudioProcessor:
         transcription = self.client.audio.transcriptions.create(
             model=self.transcription_model,
             file=file_buffer,
-            prompt=(
-                f"The spoken language is "
-                f"{language_name}."
-            ),
+            prompt=f"The spoken language is {language_name}."
         )
 
         transcript = (
@@ -106,8 +86,7 @@ class AudioProcessor:
         if not transcript:
 
             raise ValueError(
-                "No se pudo obtener contenido "
-                "hablado utilizable del audio."
+                "No se pudo obtener una transcripción válida."
             )
 
         # ====================================================
@@ -117,7 +96,7 @@ class AudioProcessor:
         translated = self.translator.translate(
             transcript,
             source_language,
-            target_language,
+            target_language
         )
 
         translated = (
@@ -138,11 +117,11 @@ class AudioProcessor:
             model=self.tts_model,
             voice=self.voice,
             input=translated,
-            response_format="mp3",
+            response_format="mp3"
         )
 
         # ====================================================
-        # 4. OBTENER AUDIO
+        # 4. AUDIO RESULTANTE
         # ====================================================
 
         audio_bytes = speech.read()
@@ -154,12 +133,12 @@ class AudioProcessor:
             )
 
         # ====================================================
-        # RESPUESTA
+        # RESULTADO
         # ====================================================
 
         return {
             "transcript": transcript,
             "translation": translated,
             "audio_bytes": audio_bytes,
-            "audio_mime": "audio/mpeg",
+            "audio_mime": "audio/mpeg"
         }
