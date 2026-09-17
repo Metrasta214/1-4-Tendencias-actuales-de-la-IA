@@ -39,7 +39,7 @@ app.add_middleware(
         "http://127.0.0.1:3000",
     ],
     allow_credentials=False,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
 )
 
@@ -180,12 +180,12 @@ def translate(
     request: TranslationRequest
 ):
 
-    ensure_different_languages(
-        request.source_language,
-        request.target_language
-    )
-
     try:
+
+        ensure_different_languages(
+            request.source_language,
+            request.target_language
+        )
 
         translator, _, _, _ = get_services()
 
@@ -200,11 +200,19 @@ def translate(
             "translation": result
         }
 
+    except HTTPException:
+        raise
+
     except Exception as exc:
+
+        print(
+            f"ERROR /api/translate: "
+            f"{type(exc).__name__}: {exc}"
+        )
 
         raise HTTPException(
             status_code=502,
-            detail=str(exc)
+            detail=f"Error en la traducción: {str(exc)}"
         ) from exc
 
 
@@ -217,12 +225,12 @@ def chat(
     request: ChatRequest
 ):
 
-    ensure_different_languages(
-        request.source_language,
-        request.target_language
-    )
-
     try:
+
+        ensure_different_languages(
+            request.source_language,
+            request.target_language
+        )
 
         translator, _, _, _ = get_services()
 
@@ -238,11 +246,19 @@ def chat(
             "translation": result
         }
 
+    except HTTPException:
+        raise
+
     except Exception as exc:
+
+        print(
+            f"ERROR /api/chat: "
+            f"{type(exc).__name__}: {exc}"
+        )
 
         raise HTTPException(
             status_code=502,
-            detail=str(exc)
+            detail=f"Error en el chat: {str(exc)}"
         ) from exc
 
 
@@ -257,23 +273,52 @@ async def audio(
     target_language: str = Form(...)
 ):
 
-    ensure_different_languages(
-        source_language,
-        target_language
-    )
-
-    contents = await file.read()
-
-    validator.validate_upload(
-        filename=file.filename or "",
-        content_type=file.content_type or "",
-        size_bytes=len(contents),
-        category="audio"
-    )
-
     try:
 
+        # ----------------------------------------------------
+        # VALIDAR IDIOMAS
+        # ----------------------------------------------------
+
+        ensure_different_languages(
+            source_language,
+            target_language
+        )
+
+        # ----------------------------------------------------
+        # VALIDAR ARCHIVO
+        # ----------------------------------------------------
+
+        contents = await file.read()
+
+        if not contents:
+
+            raise HTTPException(
+                status_code=400,
+                detail="El archivo de audio está vacío."
+            )
+
+        validator.validate_upload(
+            filename=file.filename or "",
+            content_type=file.content_type or "",
+            size_bytes=len(contents),
+            category="audio"
+        )
+
+        # ----------------------------------------------------
+        # OBTENER SERVICIO DE AUDIO
+        # ----------------------------------------------------
+
         _, audio_service, _, _ = get_services()
+
+        if audio_service is None:
+
+            raise RuntimeError(
+                "No se pudo inicializar el servicio de audio."
+            )
+
+        # ----------------------------------------------------
+        # PROCESAR AUDIO
+        # ----------------------------------------------------
 
         result = audio_service.process(
             filename=file.filename or "audio",
@@ -281,6 +326,38 @@ async def audio(
             source_language=source_language,
             target_language=target_language
         )
+
+        # ----------------------------------------------------
+        # VALIDAR RESULTADO
+        # ----------------------------------------------------
+
+        if not result:
+
+            raise RuntimeError(
+                "El procesador de audio no devolvió resultados."
+            )
+
+        if not result.get("transcript"):
+
+            raise RuntimeError(
+                "No se obtuvo una transcripción válida."
+            )
+
+        if not result.get("translation"):
+
+            raise RuntimeError(
+                "No se obtuvo una traducción válida."
+            )
+
+        if not result.get("audio_bytes"):
+
+            raise RuntimeError(
+                "No se obtuvo el audio traducido."
+            )
+
+        # ----------------------------------------------------
+        # RESPUESTA
+        # ----------------------------------------------------
 
         return {
             "transcript": result["transcript"],
@@ -291,11 +368,22 @@ async def audio(
             ).decode("utf-8")
         }
 
+    except HTTPException:
+        raise
+
     except Exception as exc:
+
+        print(
+            f"ERROR /api/audio: "
+            f"{type(exc).__name__}: {exc}"
+        )
 
         raise HTTPException(
             status_code=502,
-            detail=str(exc)
+            detail=(
+                f"Error procesando el audio: "
+                f"{type(exc).__name__}: {str(exc)}"
+            )
         ) from exc
 
 
@@ -310,21 +398,28 @@ async def document(
     target_language: str = Form(...)
 ):
 
-    ensure_different_languages(
-        source_language,
-        target_language
-    )
-
-    contents = await file.read()
-
-    validator.validate_upload(
-        filename=file.filename or "",
-        content_type=file.content_type or "",
-        size_bytes=len(contents),
-        category="document"
-    )
-
     try:
+
+        ensure_different_languages(
+            source_language,
+            target_language
+        )
+
+        contents = await file.read()
+
+        if not contents:
+
+            raise HTTPException(
+                status_code=400,
+                detail="El archivo está vacío."
+            )
+
+        validator.validate_upload(
+            filename=file.filename or "",
+            content_type=file.content_type or "",
+            size_bytes=len(contents),
+            category="document"
+        )
 
         _, _, document_service, _ = get_services()
 
@@ -337,11 +432,19 @@ async def document(
 
         return result
 
+    except HTTPException:
+        raise
+
     except Exception as exc:
+
+        print(
+            f"ERROR /api/document: "
+            f"{type(exc).__name__}: {exc}"
+        )
 
         raise HTTPException(
             status_code=502,
-            detail=str(exc)
+            detail=f"Error procesando documento: {str(exc)}"
         ) from exc
 
 
@@ -356,21 +459,28 @@ async def image(
     target_language: str = Form(...)
 ):
 
-    ensure_different_languages(
-        source_language,
-        target_language
-    )
-
-    contents = await file.read()
-
-    validator.validate_upload(
-        filename=file.filename or "",
-        content_type=file.content_type or "",
-        size_bytes=len(contents),
-        category="image"
-    )
-
     try:
+
+        ensure_different_languages(
+            source_language,
+            target_language
+        )
+
+        contents = await file.read()
+
+        if not contents:
+
+            raise HTTPException(
+                status_code=400,
+                detail="La imagen está vacía."
+            )
+
+        validator.validate_upload(
+            filename=file.filename or "",
+            content_type=file.content_type or "",
+            size_bytes=len(contents),
+            category="image"
+        )
 
         _, _, _, image_service = get_services()
 
@@ -384,9 +494,17 @@ async def image(
 
         return result
 
+    except HTTPException:
+        raise
+
     except Exception as exc:
+
+        print(
+            f"ERROR /api/image: "
+            f"{type(exc).__name__}: {exc}"
+        )
 
         raise HTTPException(
             status_code=502,
-            detail=str(exc)
+            detail=f"Error procesando imagen: {str(exc)}"
         ) from exc
