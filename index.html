@@ -1,195 +1,659 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LinguaAI | Traductor Multimodal</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-    <div id="toastContainer" class="toast-container position-fixed top-0 end-0 p-3"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <title>LinguaAI | Traductor Multimodal</title>
+
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+
+    <!-- Estilos del proyecto -->
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+
+  <body>
+    <!-- Notificaciones -->
+    <div
+      id="toastContainer"
+      class="toast-container position-fixed top-0 end-0 p-3"
+    ></div>
+
+    <!-- =====================================
+         NAVBAR
+    ====================================== -->
     <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="#">
-                <span class="brand-mark">L</span>
-                LinguaAI
-            </a>
-            <span class="small text-secondary d-none d-md-inline">Español ↔ Inglés · IA multimodal</span>
-        </div>
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="#">
+          <span class="brand-mark">L</span>
+          LinguaAI
+        </a>
+
+        <span class="small text-secondary d-none d-md-inline">
+          Español ↔ Inglés · IA multimodal
+        </span>
+      </div>
     </nav>
 
+    <!-- =====================================
+         CONTENIDO PRINCIPAL
+    ====================================== -->
     <main class="container py-4 py-lg-5">
-        <section class="hero-panel mb-4 mb-lg-5">
-            <div>
-                <span class="eyebrow">TRADUCTOR INTELIGENTE</span>
-                <h1>Una sola plataforma para traducirlo todo.</h1>
-                <p>Texto conversacional, audio, documentos e imágenes, integrados en una experiencia responsiva.</p>
-            </div>
-            <div class="hero-badge"><i class="bi bi-stars"></i> OpenAI</div>
-        </section>
+      <!-- Bienvenida -->
+      <section class="hero-panel mb-4 mb-lg-5">
+        <div>
+          <span class="eyebrow"> TRADUCTOR INTELIGENTE </span>
 
-        <div class="row g-4">
-            <aside class="col-12 col-lg-3">
-                <div class="module-card">
-                    <div class="module-title">Modalidades</div>
-                    <div class="nav nav-pills flex-lg-column gap-2" id="moduleNav" role="tablist">
-                        <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#chatPane" type="button">
-                            <i class="bi bi-chat-left-text"></i><span>Chat</span><small>Conversación bilingüe</small>
-                        </button>
-                        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#audioPane" type="button">
-                            <i class="bi bi-mic"></i><span>Audio</span><small>Voz → traducción hablada</small>
-                        </button>
-                        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#documentPane" type="button">
-                            <i class="bi bi-file-earmark-text"></i><span>Documentos</span><small>PDF · DOCX · TXT</small>
-                        </button>
-                        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#imagePane" type="button">
-                            <i class="bi bi-image"></i><span>Imágenes</span><small>Texto dentro de imágenes</small>
-                        </button>
-                    </div>
-                    <div class="security-box mt-4">
-                        <i class="bi bi-shield-check"></i>
-                        <div><strong>API Key protegida</strong><span>Las credenciales permanecen en el backend.</span></div>
-                    </div>
-                </div>
-            </aside>
+          <h1>Una sola plataforma para traducirlo todo.</h1>
 
-            <section class="col-12 col-lg-9">
-                <div class="tab-content">
-
-                    <div class="tab-pane fade show active" id="chatPane">
-                        <div class="workspace-card">
-                            <div class="workspace-header">
-                                <div><span class="section-kicker">MODO CHAT</span><h2>Conversación bilingüe</h2></div>
-                                <button class="btn btn-light btn-sm" id="clearChatBtn"><i class="bi bi-trash3"></i> Limpiar</button>
-                            </div>
-
-                            <div class="language-bar">
-                                <div><label for="chatSourceLanguage">Origen</label>
-                                    <select id="chatSourceLanguage" class="form-select">
-                                        <option value="es">Español</option><option value="en">Inglés</option>
-                                    </select>
-                                </div>
-                                <button class="swap-btn" id="swapChatLanguages" title="Intercambiar idiomas"><i class="bi bi-arrow-left-right"></i></button>
-                                <div><label for="chatTargetLanguage">Destino</label>
-                                    <select id="chatTargetLanguage" class="form-select">
-                                        <option value="en">Inglés</option><option value="es">Español</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div id="chatMessages" class="chat-messages">
-                                <div class="empty-state">
-                                    <i class="bi bi-translate"></i><h3>Inicia la conversación</h3>
-                                    <p>Escribe un mensaje y recibe su traducción con contexto.</p>
-                                </div>
-                            </div>
-
-                            <form id="chatForm" class="chat-composer">
-                                <textarea id="chatInput" class="form-control" rows="3" placeholder="Escribe aquí tu mensaje..." maxlength="12000"></textarea>
-                                <div class="composer-footer">
-                                    <span id="chatCounter">0 / 12000</span>
-                                    <button class="btn btn-dark px-4" type="submit" id="chatSendBtn"><i class="bi bi-send"></i> Traducir</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div class="tab-pane fade" id="audioPane">
-                        <div class="workspace-card">
-                            <div class="workspace-header"><div><span class="section-kicker">MODO AUDIO</span><h2>Traducción de voz</h2></div></div>
-                            <div class="language-bar">
-                                <div><label for="audioSourceLanguage">Origen</label>
-                                    <select id="audioSourceLanguage" class="form-select"><option value="es">Español</option><option value="en">Inglés</option></select>
-                                </div>
-                                <div><label for="audioTargetLanguage">Destino</label>
-                                    <select id="audioTargetLanguage" class="form-select"><option value="en">Inglés</option><option value="es">Español</option></select>
-                                </div>
-                            </div>
-                            <div class="upload-zone">
-                                <i class="bi bi-cloud-arrow-up"></i><h3>Selecciona un archivo de audio</h3>
-                                <p>MP3, WAV, M4A, OGG · máximo 10 MB</p>
-                                <input type="file" id="audioFile" accept=".mp3,.wav,.m4a,.ogg,audio/*" hidden>
-                                <button class="btn btn-outline-dark" type="button" id="selectAudioBtn">Seleccionar audio</button>
-                            </div>
-                            <div id="audioFileInfo" class="file-info d-none"></div>
-                            <div class="processing-panel d-none" id="audioProcessing"><div class="spinner-border spinner-border-sm"></div><span>Transcribiendo, traduciendo y generando audio...</span></div>
-                            <div id="audioResult" class="result-grid d-none">
-                                <div class="result-card"><div class="result-title">Transcripción</div><div id="audioTranscript" class="result-text"></div></div>
-                                <div class="result-card"><div class="result-title">Traducción</div><div id="audioTranslation" class="result-text"></div></div>
-                                <div class="result-card result-card-wide"><div class="result-title">Traducción hablada</div><audio id="audioPlayer" controls class="w-100"></audio></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tab-pane fade" id="documentPane">
-                        <div class="workspace-card">
-                            <div class="workspace-header"><div><span class="section-kicker">MODO DOCUMENTOS</span><h2>Traduce contenido de archivos</h2></div></div>
-                            <div class="language-bar">
-                                <div><label for="documentSourceLanguage">Origen</label>
-                                    <select id="documentSourceLanguage" class="form-select"><option value="es">Español</option><option value="en">Inglés</option></select>
-                                </div>
-                                <div><label for="documentTargetLanguage">Destino</label>
-                                    <select id="documentTargetLanguage" class="form-select"><option value="en">Inglés</option><option value="es">Español</option></select>
-                                </div>
-                            </div>
-                            <div class="upload-zone">
-                                <i class="bi bi-file-earmark-arrow-up"></i><h3>Carga tu documento</h3>
-                                <p>PDF, DOCX o TXT · máximo 10 MB</p>
-                                <input type="file" id="documentFile" accept=".pdf,.docx,.txt" hidden>
-                                <button class="btn btn-outline-dark" type="button" id="selectDocumentBtn">Seleccionar documento</button>
-                            </div>
-                            <div id="documentFileInfo" class="file-info d-none"></div>
-                            <div class="processing-panel d-none" id="documentProcessing"><div class="spinner-border spinner-border-sm"></div><span>Extrayendo contenido y traduciendo...</span></div>
-                            <div id="documentResult" class="result-grid d-none">
-                                <div class="result-card"><div class="result-title">Contenido original</div><pre id="documentOriginal" class="result-text document-text"></pre></div>
-                                <div class="result-card"><div class="result-title">Traducción</div><pre id="documentTranslation" class="result-text document-text"></pre></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tab-pane fade" id="imagePane">
-                        <div class="workspace-card">
-                            <div class="workspace-header"><div><span class="section-kicker">MODO IMAGEN</span><h2>Traduce texto visible en una imagen</h2></div></div>
-                            <div class="language-bar">
-                                <div><label for="imageSourceLanguage">Origen</label>
-                                    <select id="imageSourceLanguage" class="form-select"><option value="es">Español</option><option value="en">Inglés</option></select>
-                                </div>
-                                <div><label for="imageTargetLanguage">Destino</label>
-                                    <select id="imageTargetLanguage" class="form-select"><option value="en">Inglés</option><option value="es">Español</option></select>
-                                </div>
-                            </div>
-                            <div class="upload-zone">
-                                <i class="bi bi-image"></i><h3>Selecciona una imagen</h3>
-                                <p>PNG, JPG o JPEG · máximo 10 MB</p>
-                                <input type="file" id="imageFile" accept=".png,.jpg,.jpeg,image/png,image/jpeg" hidden>
-                                <button class="btn btn-outline-dark" type="button" id="selectImageBtn">Seleccionar imagen</button>
-                            </div>
-                            <div id="imagePreviewWrap" class="image-preview d-none"><img id="imagePreview" alt="Vista previa de la imagen seleccionada"></div>
-                            <div class="processing-panel d-none" id="imageProcessing"><div class="spinner-border spinner-border-sm"></div><span>Analizando texto visible y traduciendo...</span></div>
-                            <div id="imageResult" class="result-card d-none"><div class="result-title">Traducción</div><div id="imageTranslation" class="result-text"></div></div>
-                        </div>
-                    </div>
-
-                </div>
-            </section>
+          <p>
+            Texto conversacional, audio, documentos e imágenes, integrados en
+            una experiencia sencilla e intuitiva.
+          </p>
         </div>
+
+        <div class="hero-badge">
+          <i class="bi bi-stars"></i>
+          OpenAI
+        </div>
+      </section>
+
+      <!-- =====================================
+             TARJETAS DE FUNCIONES
+        ====================================== -->
+      <section class="feature-grid mb-4" aria-label="Funciones de LinguaAI">
+        <!-- Chat -->
+        <button
+          class="feature-card feature-chat"
+          data-feature="#chatPane"
+          type="button"
+        >
+          <span class="feature-icon">
+            <i class="bi bi-chat-square-text"></i>
+          </span>
+
+          <strong>Chat inteligente</strong>
+
+          <span> Traduce conversaciones con contexto. </span>
+
+          <b>
+            Comenzar
+            <i class="bi bi-arrow-right"></i>
+          </b>
+        </button>
+
+        <!-- Audio -->
+        <button
+          class="feature-card feature-audio"
+          data-feature="#audioPane"
+          type="button"
+        >
+          <span class="feature-icon">
+            <i class="bi bi-soundwave"></i>
+          </span>
+
+          <strong>Traducción de audio</strong>
+
+          <span> Convierte voz en traducción hablada. </span>
+
+          <b>
+            Explorar
+            <i class="bi bi-arrow-right"></i>
+          </b>
+        </button>
+
+        <!-- Documentos -->
+        <button
+          class="feature-card feature-docs"
+          data-feature="#documentPane"
+          type="button"
+        >
+          <span class="feature-icon">
+            <i class="bi bi-file-earmark-richtext"></i>
+          </span>
+
+          <strong>Documentos</strong>
+
+          <span> Traduce PDF, DOCX y TXT. </span>
+
+          <b>
+            Explorar
+            <i class="bi bi-arrow-right"></i>
+          </b>
+        </button>
+
+        <!-- Imágenes -->
+        <button
+          class="feature-card feature-image"
+          data-feature="#imagePane"
+          type="button"
+        >
+          <span class="feature-icon">
+            <i class="bi bi-images"></i>
+          </span>
+
+          <strong>Imágenes</strong>
+
+          <span> Interpreta y traduce texto visual. </span>
+
+          <b>
+            Explorar
+            <i class="bi bi-arrow-right"></i>
+          </b>
+        </button>
+      </section>
+
+      <!-- =====================================
+             ÁREA DE TRABAJO
+        ====================================== -->
+      <div class="row g-4">
+        <!-- =================================
+                 BARRA LATERAL
+            ================================== -->
+        <aside class="col-12 col-lg-3">
+          <div class="module-card">
+            <div class="module-title">Tus herramientas</div>
+
+            <!-- Nueva conversación -->
+            <button
+              class="btn btn-primary w-100 mb-3"
+              id="newConversationBtn"
+              type="button"
+            >
+              <i class="bi bi-plus-lg me-2"></i>
+              Nueva conversación
+            </button>
+
+            <!-- Historial -->
+            <div class="history-heading">Historial reciente</div>
+
+            <div id="conversationHistory" class="conversation-history"></div>
+
+            <!-- Navegación entre modalidades -->
+            <div
+              class="nav nav-pills flex-lg-column gap-2"
+              id="moduleNav"
+              role="tablist"
+            >
+              <button
+                class="nav-link active"
+                data-bs-toggle="pill"
+                data-bs-target="#chatPane"
+                type="button"
+              >
+                <i class="bi bi-chat-left-text"></i>
+
+                <span>Chat</span>
+
+                <small> Conversación bilingüe </small>
+              </button>
+
+              <button
+                class="nav-link"
+                data-bs-toggle="pill"
+                data-bs-target="#audioPane"
+                type="button"
+              >
+                <i class="bi bi-mic"></i>
+
+                <span>Audio</span>
+
+                <small> Voz → traducción hablada </small>
+              </button>
+
+              <button
+                class="nav-link"
+                data-bs-toggle="pill"
+                data-bs-target="#documentPane"
+                type="button"
+              >
+                <i class="bi bi-file-earmark-text"></i>
+
+                <span>Documentos</span>
+
+                <small> PDF · DOCX · TXT </small>
+              </button>
+
+              <button
+                class="nav-link"
+                data-bs-toggle="pill"
+                data-bs-target="#imagePane"
+                type="button"
+              >
+                <i class="bi bi-image"></i>
+
+                <span>Imágenes</span>
+
+                <small> Texto dentro de imágenes </small>
+              </button>
+            </div>
+
+            <!-- Seguridad -->
+            <div class="security-box mt-4">
+              <i class="bi bi-shield-check"></i>
+
+              <div>
+                <strong>API Key protegida</strong>
+
+                <span> Las credenciales permanecen en el backend. </span>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- =================================
+                 CONTENIDO DE MODALIDADES
+            ================================== -->
+        <section class="col-12 col-lg-9">
+          <div class="tab-content">
+            <!-- =================================
+                         CHAT
+                    ================================== -->
+            <div class="tab-pane fade show active" id="chatPane">
+              <div class="workspace-card">
+                <!-- Encabezado -->
+                <div class="workspace-header">
+                  <div>
+                    <span class="section-kicker"> MODO CHAT </span>
+
+                    <h2>Conversación bilingüe</h2>
+                  </div>
+
+                  <button
+                    class="btn btn-light btn-sm"
+                    id="clearChatBtn"
+                    type="button"
+                  >
+                    <i class="bi bi-trash3"></i>
+                    Limpiar
+                  </button>
+                </div>
+
+                <!-- Selector de idiomas -->
+                <div class="language-bar">
+                  <div>
+                    <label for="chatSourceLanguage"> Origen </label>
+
+                    <select id="chatSourceLanguage" class="form-select">
+                      <option value="es">Español</option>
+
+                      <option value="en">Inglés</option>
+                    </select>
+                  </div>
+
+                  <button
+                    class="swap-btn"
+                    id="swapChatLanguages"
+                    type="button"
+                    title="Intercambiar idiomas"
+                  >
+                    <i class="bi bi-arrow-left-right"></i>
+                  </button>
+
+                  <div>
+                    <label for="chatTargetLanguage"> Destino </label>
+
+                    <select id="chatTargetLanguage" class="form-select">
+                      <option value="en">Inglés</option>
+
+                      <option value="es">Español</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Mensajes -->
+                <div id="chatMessages" class="chat-messages">
+                  <div class="empty-state">
+                    <i class="bi bi-translate"></i>
+
+                    <h3>Inicia la conversación</h3>
+
+                    <p>
+                      Escribe un mensaje y recibe su traducción con contexto.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Formulario -->
+                <form id="chatForm" class="chat-composer">
+                  <textarea
+                    id="chatInput"
+                    class="form-control"
+                    rows="3"
+                    placeholder="Escribe aquí tu mensaje..."
+                    maxlength="12000"
+                  >
+                  </textarea>
+
+                  <div class="composer-footer">
+                    <span id="chatCounter"> 0 / 12000 </span>
+
+                    <button
+                      class="btn btn-dark px-4"
+                      type="submit"
+                      id="chatSendBtn"
+                    >
+                      <i class="bi bi-send"></i>
+                      Traducir
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- =================================
+                         AUDIO
+                    ================================== -->
+            <div class="tab-pane fade" id="audioPane">
+              <div class="workspace-card">
+                <div class="workspace-header">
+                  <div>
+                    <span class="section-kicker"> MODO AUDIO </span>
+
+                    <h2>Traducción de voz</h2>
+                  </div>
+                </div>
+
+                <!-- Idiomas -->
+                <div class="language-bar">
+                  <div>
+                    <label for="audioSourceLanguage"> Origen </label>
+
+                    <select id="audioSourceLanguage" class="form-select">
+                      <option value="es">Español</option>
+
+                      <option value="en">Inglés</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label for="audioTargetLanguage"> Destino </label>
+
+                    <select id="audioTargetLanguage" class="form-select">
+                      <option value="en">Inglés</option>
+
+                      <option value="es">Español</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Carga de audio -->
+                <div class="upload-zone">
+                  <i class="bi bi-cloud-arrow-up"></i>
+
+                  <h3>Selecciona un archivo de audio</h3>
+
+                  <p>MP3, WAV, M4A, OGG · máximo 10 MB</p>
+
+                  <input
+                    type="file"
+                    id="audioFile"
+                    accept=".mp3,.wav,.m4a,.ogg,audio/*"
+                    hidden
+                  />
+
+                  <button
+                    class="btn btn-outline-dark"
+                    type="button"
+                    id="selectAudioBtn"
+                  >
+                    Seleccionar audio
+                  </button>
+                </div>
+
+                <div id="audioFileInfo" class="file-info d-none"></div>
+
+                <!-- Procesamiento -->
+                <div class="processing-panel d-none" id="audioProcessing">
+                  <div class="spinner-border spinner-border-sm"></div>
+
+                  <span>
+                    Transcribiendo, traduciendo y generando audio...
+                  </span>
+                </div>
+
+                <!-- Resultados -->
+                <div id="audioResult" class="result-grid d-none">
+                  <div class="result-card">
+                    <div class="result-title">Transcripción</div>
+
+                    <div id="audioTranscript" class="result-text"></div>
+                  </div>
+
+                  <div class="result-card">
+                    <div class="result-title">Traducción</div>
+
+                    <div id="audioTranslation" class="result-text"></div>
+                  </div>
+
+                  <div class="result-card result-card-wide">
+                    <div class="result-title">Traducción hablada</div>
+
+                    <audio id="audioPlayer" controls class="w-100"></audio>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- =================================
+                         DOCUMENTOS
+                    ================================== -->
+            <div class="tab-pane fade" id="documentPane">
+              <div class="workspace-card">
+                <div class="workspace-header">
+                  <div>
+                    <span class="section-kicker"> MODO DOCUMENTOS </span>
+
+                    <h2>Traduce contenido de archivos</h2>
+                  </div>
+                </div>
+
+                <!-- Idiomas -->
+                <div class="language-bar">
+                  <div>
+                    <label for="documentSourceLanguage"> Origen </label>
+
+                    <select id="documentSourceLanguage" class="form-select">
+                      <option value="es">Español</option>
+
+                      <option value="en">Inglés</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label for="documentTargetLanguage"> Destino </label>
+
+                    <select id="documentTargetLanguage" class="form-select">
+                      <option value="en">Inglés</option>
+
+                      <option value="es">Español</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Carga de documentos -->
+                <div class="upload-zone">
+                  <i class="bi bi-file-earmark-arrow-up"></i>
+
+                  <h3>Carga tu documento</h3>
+
+                  <p>PDF, DOCX o TXT · máximo 10 MB</p>
+
+                  <input
+                    type="file"
+                    id="documentFile"
+                    accept=".pdf,.docx,.txt"
+                    hidden
+                  />
+
+                  <button
+                    class="btn btn-outline-dark"
+                    type="button"
+                    id="selectDocumentBtn"
+                  >
+                    Seleccionar documento
+                  </button>
+                </div>
+
+                <div id="documentFileInfo" class="file-info d-none"></div>
+
+                <!-- Procesamiento -->
+                <div class="processing-panel d-none" id="documentProcessing">
+                  <div class="spinner-border spinner-border-sm"></div>
+
+                  <span> Extrayendo contenido y traduciendo... </span>
+                </div>
+
+                <!-- Resultados -->
+                <div id="documentResult" class="result-grid d-none">
+                  <div class="result-card">
+                    <div class="result-title">Contenido original</div>
+
+                    <pre
+                      id="documentOriginal"
+                      class="result-text document-text"
+                    ></pre>
+                  </div>
+
+                  <div class="result-card">
+                    <div class="result-title">Traducción</div>
+
+                    <pre
+                      id="documentTranslation"
+                      class="result-text document-text"
+                    ></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- =================================
+                         IMÁGENES
+                    ================================== -->
+            <div class="tab-pane fade" id="imagePane">
+              <div class="workspace-card">
+                <div class="workspace-header">
+                  <div>
+                    <span class="section-kicker"> MODO IMAGEN </span>
+
+                    <h2>Traduce texto visible en una imagen</h2>
+                  </div>
+                </div>
+
+                <!-- Idiomas -->
+                <div class="language-bar">
+                  <div>
+                    <label for="imageSourceLanguage"> Origen </label>
+
+                    <select id="imageSourceLanguage" class="form-select">
+                      <option value="es">Español</option>
+
+                      <option value="en">Inglés</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label for="imageTargetLanguage"> Destino </label>
+
+                    <select id="imageTargetLanguage" class="form-select">
+                      <option value="en">Inglés</option>
+
+                      <option value="es">Español</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Carga de imágenes -->
+                <div class="upload-zone">
+                  <i class="bi bi-image"></i>
+
+                  <h3>Selecciona una imagen</h3>
+
+                  <p>PNG, JPG o JPEG · máximo 10 MB</p>
+
+                  <input
+                    type="file"
+                    id="imageFile"
+                    accept=".png,.jpg,.jpeg,image/png,image/jpeg"
+                    hidden
+                  />
+
+                  <button
+                    class="btn btn-outline-dark"
+                    type="button"
+                    id="selectImageBtn"
+                  >
+                    Seleccionar imagen
+                  </button>
+                </div>
+
+                <!-- Vista previa -->
+                <div id="imagePreviewWrap" class="image-preview d-none">
+                  <img
+                    id="imagePreview"
+                    alt="Vista previa de la imagen seleccionada"
+                  />
+                </div>
+
+                <!-- Procesamiento -->
+                <div class="processing-panel d-none" id="imageProcessing">
+                  <div class="spinner-border spinner-border-sm"></div>
+
+                  <span> Analizando texto visible y traduciendo... </span>
+                </div>
+
+                <!-- Resultado -->
+                <div id="imageResult" class="result-card d-none">
+                  <div class="result-title">Traducción</div>
+
+                  <div id="imageTranslation" class="result-text"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
     </main>
 
+    <!-- =====================================
+         FOOTER
+    ====================================== -->
     <footer class="footer py-4 mt-5">
-        <div class="container d-flex flex-column flex-md-row justify-content-between gap-2">
-            <span>LinguaAI · Traductor Multimodal</span><span>Desarrollado por Álvaro Madrid Morales</span>
-        </div>
+      <div
+        class="container d-flex flex-column flex-md-row justify-content-between gap-2"
+      >
+        <span> LinguaAI · Traductor Multimodal </span>
+
+        <span> Desarrollado por Álvaro Madrid Morales </span>
+      </div>
     </footer>
 
+    <!-- =====================================
+         SCRIPTS
+    ====================================== -->
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Mantener configuración de conexión -->
     <script src="js/config.js"></script>
+
+    <!-- Lógica general -->
     <script src="js/app.js"></script>
+
+    <!-- Funcionalidades -->
     <script src="js/chat.js"></script>
     <script src="js/audio.js"></script>
     <script src="js/documents.js"></script>
     <script src="js/images.js"></script>
-</body>
+  </body>
 </html>
