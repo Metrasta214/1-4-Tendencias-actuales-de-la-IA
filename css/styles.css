@@ -589,3 +589,50 @@ main.container {
         grid-template-columns: 1fr;
     }
 }
+
+
+
+
+.audio-recorder {
+    padding: 34px 20px;
+    border: 1px dashed #d8d3ff;
+    border-radius: 18px;
+    background: #fbfaff;
+}
+
+.audio-recorder > i {
+    color: var(--primary);
+    font-size: 2.2rem;
+}
+
+.audio-recorder h3 {
+    margin-top: 12px;
+    font-weight: 700;
+}
+
+.audio-recording-indicator {
+    color: #dc3545;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.recording-dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    margin-right: 7px;
+    border-radius: 50%;
+    background: #dc3545;
+    animation: recordingPulse 1s infinite;
+}
+
+@keyframes recordingPulse {
+    50% {
+        opacity: 0.3;
+    }
+}
+
+#stopRecordingBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

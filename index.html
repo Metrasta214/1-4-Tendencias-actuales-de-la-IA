@@ -29,9 +29,7 @@
       class="toast-container position-fixed top-0 end-0 p-3"
     ></div>
 
-    <!-- =====================================
-         NAVBAR
-    ====================================== -->
+    <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
       <div class="container">
         <a class="navbar-brand fw-bold" href="#">
@@ -45,14 +43,12 @@
       </div>
     </nav>
 
-    <!-- =====================================
-         CONTENIDO PRINCIPAL
-    ====================================== -->
+    <!-- CONTENIDO PRINCIPAL -->
     <main class="container py-4 py-lg-5">
-      <!-- Bienvenida -->
+      <!-- BIENVENIDA -->
       <section class="hero-panel mb-4 mb-lg-5">
         <div>
-          <span class="eyebrow"> TRADUCTOR INTELIGENTE </span>
+          <span class="eyebrow">TRADUCTOR INTELIGENTE</span>
 
           <h1>Una sola plataforma para traducirlo todo.</h1>
 
@@ -68,11 +64,8 @@
         </div>
       </section>
 
-      <!-- =====================================
-             TARJETAS DE FUNCIONES
-        ====================================== -->
+      <!-- TARJETAS DE FUNCIONES -->
       <section class="feature-grid mb-4" aria-label="Funciones de LinguaAI">
-        <!-- Chat -->
         <button
           class="feature-card feature-chat"
           data-feature="#chatPane"
@@ -84,7 +77,7 @@
 
           <strong>Chat inteligente</strong>
 
-          <span> Traduce conversaciones con contexto. </span>
+          <span>Traduce conversaciones con contexto.</span>
 
           <b>
             Comenzar
@@ -92,7 +85,6 @@
           </b>
         </button>
 
-        <!-- Audio -->
         <button
           class="feature-card feature-audio"
           data-feature="#audioPane"
@@ -104,7 +96,7 @@
 
           <strong>Traducción de audio</strong>
 
-          <span> Convierte voz en traducción hablada. </span>
+          <span>Convierte voz en traducción hablada.</span>
 
           <b>
             Explorar
@@ -112,7 +104,6 @@
           </b>
         </button>
 
-        <!-- Documentos -->
         <button
           class="feature-card feature-docs"
           data-feature="#documentPane"
@@ -124,7 +115,7 @@
 
           <strong>Documentos</strong>
 
-          <span> Traduce PDF, DOCX y TXT. </span>
+          <span>Traduce PDF, DOCX y TXT.</span>
 
           <b>
             Explorar
@@ -132,7 +123,6 @@
           </b>
         </button>
 
-        <!-- Imágenes -->
         <button
           class="feature-card feature-image"
           data-feature="#imagePane"
@@ -144,7 +134,7 @@
 
           <strong>Imágenes</strong>
 
-          <span> Interpreta y traduce texto visual. </span>
+          <span>Interpreta y traduce texto visual.</span>
 
           <b>
             Explorar
@@ -153,18 +143,13 @@
         </button>
       </section>
 
-      <!-- =====================================
-             ÁREA DE TRABAJO
-        ====================================== -->
+      <!-- ÁREA DE TRABAJO -->
       <div class="row g-4">
-        <!-- =================================
-                 BARRA LATERAL
-            ================================== -->
+        <!-- BARRA LATERAL -->
         <aside class="col-12 col-lg-3">
           <div class="module-card">
             <div class="module-title">Tus herramientas</div>
 
-            <!-- Nueva conversación -->
             <button
               class="btn btn-primary w-100 mb-3"
               id="newConversationBtn"
@@ -174,12 +159,11 @@
               Nueva conversación
             </button>
 
-            <!-- Historial -->
             <div class="history-heading">Historial reciente</div>
 
             <div id="conversationHistory" class="conversation-history"></div>
 
-            <!-- Navegación entre modalidades -->
+            <!-- NAVEGACIÓN -->
             <div
               class="nav nav-pills flex-lg-column gap-2"
               id="moduleNav"
@@ -190,12 +174,11 @@
                 data-bs-toggle="pill"
                 data-bs-target="#chatPane"
                 type="button"
+                role="tab"
               >
                 <i class="bi bi-chat-left-text"></i>
-
                 <span>Chat</span>
-
-                <small> Conversación bilingüe </small>
+                <small>Conversación bilingüe</small>
               </button>
 
               <button
@@ -203,12 +186,11 @@
                 data-bs-toggle="pill"
                 data-bs-target="#audioPane"
                 type="button"
+                role="tab"
               >
                 <i class="bi bi-mic"></i>
-
                 <span>Audio</span>
-
-                <small> Voz → traducción hablada </small>
+                <small>Voz → traducción hablada</small>
               </button>
 
               <button
@@ -216,12 +198,11 @@
                 data-bs-toggle="pill"
                 data-bs-target="#documentPane"
                 type="button"
+                role="tab"
               >
                 <i class="bi bi-file-earmark-text"></i>
-
                 <span>Documentos</span>
-
-                <small> PDF · DOCX · TXT </small>
+                <small>PDF · DOCX · TXT</small>
               </button>
 
               <button
@@ -229,43 +210,41 @@
                 data-bs-toggle="pill"
                 data-bs-target="#imagePane"
                 type="button"
+                role="tab"
               >
                 <i class="bi bi-image"></i>
-
                 <span>Imágenes</span>
-
-                <small> Texto dentro de imágenes </small>
+                <small>Texto dentro de imágenes</small>
               </button>
             </div>
 
-            <!-- Seguridad -->
+            <!-- SEGURIDAD -->
             <div class="security-box mt-4">
               <i class="bi bi-shield-check"></i>
 
               <div>
                 <strong>API Key protegida</strong>
-
                 <span> Las credenciales permanecen en el backend. </span>
               </div>
             </div>
           </div>
         </aside>
 
-        <!-- =================================
-                 CONTENIDO DE MODALIDADES
-            ================================== -->
+        <!-- CONTENIDO DE MODALIDADES -->
         <section class="col-12 col-lg-9">
           <div class="tab-content">
-            <!-- =================================
+            <!-- =========================
                          CHAT
-                    ================================== -->
-            <div class="tab-pane fade show active" id="chatPane">
+                    ========================== -->
+            <div
+              class="tab-pane fade show active"
+              id="chatPane"
+              role="tabpanel"
+            >
               <div class="workspace-card">
-                <!-- Encabezado -->
                 <div class="workspace-header">
                   <div>
-                    <span class="section-kicker"> MODO CHAT </span>
-
+                    <span class="section-kicker">MODO CHAT</span>
                     <h2>Conversación bilingüe</h2>
                   </div>
 
@@ -279,14 +258,13 @@
                   </button>
                 </div>
 
-                <!-- Selector de idiomas -->
+                <!-- IDIOMAS -->
                 <div class="language-bar">
                   <div>
-                    <label for="chatSourceLanguage"> Origen </label>
+                    <label for="chatSourceLanguage">Origen</label>
 
                     <select id="chatSourceLanguage" class="form-select">
                       <option value="es">Español</option>
-
                       <option value="en">Inglés</option>
                     </select>
                   </div>
@@ -301,17 +279,16 @@
                   </button>
 
                   <div>
-                    <label for="chatTargetLanguage"> Destino </label>
+                    <label for="chatTargetLanguage">Destino</label>
 
                     <select id="chatTargetLanguage" class="form-select">
                       <option value="en">Inglés</option>
-
                       <option value="es">Español</option>
                     </select>
                   </div>
                 </div>
 
-                <!-- Mensajes -->
+                <!-- MENSAJES -->
                 <div id="chatMessages" class="chat-messages">
                   <div class="empty-state">
                     <i class="bi bi-translate"></i>
@@ -324,7 +301,7 @@
                   </div>
                 </div>
 
-                <!-- Formulario -->
+                <!-- FORMULARIO -->
                 <form id="chatForm" class="chat-composer">
                   <textarea
                     id="chatInput"
@@ -335,7 +312,7 @@
                   ></textarea>
 
                   <div class="composer-footer">
-                    <span id="chatCounter"> 0 / 12000 </span>
+                    <span id="chatCounter">0 / 12000</span>
 
                     <button
                       class="btn btn-dark px-4"
@@ -350,69 +327,83 @@
               </div>
             </div>
 
-            <!-- =================================
+            <!-- =========================
                          AUDIO
-                    ================================== -->
-            <div class="tab-pane fade" id="audioPane">
+                    ========================== -->
+            <div class="tab-pane fade" id="audioPane" role="tabpanel">
               <div class="workspace-card">
                 <div class="workspace-header">
                   <div>
-                    <span class="section-kicker"> MODO AUDIO </span>
-
+                    <span class="section-kicker">MODO AUDIO</span>
                     <h2>Traducción de voz</h2>
                   </div>
                 </div>
 
-                <!-- Idiomas -->
+                <!-- IDIOMAS -->
                 <div class="language-bar">
                   <div>
-                    <label for="audioSourceLanguage"> Origen </label>
+                    <label for="audioSourceLanguage">Origen</label>
 
                     <select id="audioSourceLanguage" class="form-select">
                       <option value="es">Español</option>
-
                       <option value="en">Inglés</option>
                     </select>
                   </div>
 
                   <div>
-                    <label for="audioTargetLanguage"> Destino </label>
+                    <label for="audioTargetLanguage">Destino</label>
 
                     <select id="audioTargetLanguage" class="form-select">
                       <option value="en">Inglés</option>
-
                       <option value="es">Español</option>
                     </select>
                   </div>
                 </div>
 
-                <!-- Carga de audio -->
-                <div class="upload-zone">
-                  <i class="bi bi-cloud-arrow-up"></i>
+                <!-- GRABACIÓN POR MICRÓFONO -->
+                <div class="upload-zone audio-recorder">
+                  <i class="bi bi-mic"></i>
 
-                  <h3>Selecciona un archivo de audio</h3>
+                  <h3>Habla para traducir</h3>
 
-                  <p>MP3, WAV, M4A, OGG · máximo 10 MB</p>
+                  <p id="audioStatus">Pulsa el botón y comienza a hablar.</p>
 
-                  <input
-                    type="file"
-                    id="audioFile"
-                    accept=".mp3,.wav,.m4a,.ogg,audio/*"
-                    hidden
-                  />
-
-                  <button
-                    class="btn btn-outline-dark"
-                    type="button"
-                    id="selectAudioBtn"
+                  <div
+                    class="d-flex justify-content-center gap-2 flex-wrap mt-3"
                   >
-                    Seleccionar audio
-                  </button>
+                    <button
+                      class="btn btn-primary"
+                      type="button"
+                      id="startRecordingBtn"
+                    >
+                      <i class="bi bi-mic-fill me-2"></i>
+                      Comenzar a hablar
+                    </button>
+
+                    <button
+                      class="btn btn-outline-dark"
+                      type="button"
+                      id="stopRecordingBtn"
+                      disabled
+                    >
+                      <i class="bi bi-stop-fill me-2"></i>
+                      Detener y traducir
+                    </button>
+                  </div>
+
+                  <div
+                    class="audio-recording-indicator d-none mt-3"
+                    id="recordingIndicator"
+                  >
+                    <span class="recording-dot"></span>
+                    Grabando...
+                  </div>
                 </div>
 
+                <!-- INFORMACIÓN DE GRABACIÓN -->
                 <div id="audioFileInfo" class="file-info d-none"></div>
 
-                <!-- Procesamiento -->
+                <!-- PROCESAMIENTO -->
                 <div class="processing-panel d-none" id="audioProcessing">
                   <div class="spinner-border spinner-border-sm"></div>
 
@@ -421,17 +412,15 @@
                   </span>
                 </div>
 
-                <!-- Resultados -->
+                <!-- RESULTADOS -->
                 <div id="audioResult" class="result-grid d-none">
                   <div class="result-card">
                     <div class="result-title">Transcripción</div>
-
                     <div id="audioTranscript" class="result-text"></div>
                   </div>
 
                   <div class="result-card">
                     <div class="result-title">Traducción</div>
-
                     <div id="audioTranslation" class="result-text"></div>
                   </div>
 
@@ -444,10 +433,10 @@
               </div>
             </div>
 
-            <!-- =================================
+            <!-- =========================
                          DOCUMENTOS
-                    ================================== -->
-            <div class="tab-pane fade" id="documentPane">
+                    ========================== -->
+            <div class="tab-pane fade" id="documentPane" role="tabpanel">
               <div class="workspace-card">
                 <div class="workspace-header">
                   <div>
@@ -457,14 +446,13 @@
                   </div>
                 </div>
 
-                <!-- Idiomas -->
+                <!-- IDIOMAS -->
                 <div class="language-bar">
                   <div>
                     <label for="documentSourceLanguage"> Origen </label>
 
                     <select id="documentSourceLanguage" class="form-select">
                       <option value="es">Español</option>
-
                       <option value="en">Inglés</option>
                     </select>
                   </div>
@@ -474,13 +462,12 @@
 
                     <select id="documentTargetLanguage" class="form-select">
                       <option value="en">Inglés</option>
-
                       <option value="es">Español</option>
                     </select>
                   </div>
                 </div>
 
-                <!-- Carga de documentos -->
+                <!-- CARGA DE DOCUMENTOS -->
                 <div class="upload-zone">
                   <i class="bi bi-file-earmark-arrow-up"></i>
 
@@ -506,14 +493,13 @@
 
                 <div id="documentFileInfo" class="file-info d-none"></div>
 
-                <!-- Procesamiento -->
+                <!-- PROCESAMIENTO -->
                 <div class="processing-panel d-none" id="documentProcessing">
                   <div class="spinner-border spinner-border-sm"></div>
-
-                  <span> Extrayendo contenido y traduciendo... </span>
+                  <span>Extrayendo contenido y traduciendo...</span>
                 </div>
 
-                <!-- Resultados -->
+                <!-- RESULTADOS -->
                 <div id="documentResult" class="result-grid d-none">
                   <div class="result-card">
                     <div class="result-title">Contenido original</div>
@@ -536,43 +522,40 @@
               </div>
             </div>
 
-            <!-- =================================
+            <!-- =========================
                          IMÁGENES
-                    ================================== -->
-            <div class="tab-pane fade" id="imagePane">
+                    ========================== -->
+            <div class="tab-pane fade" id="imagePane" role="tabpanel">
               <div class="workspace-card">
                 <div class="workspace-header">
                   <div>
-                    <span class="section-kicker"> MODO IMAGEN </span>
-
+                    <span class="section-kicker">MODO IMAGEN</span>
                     <h2>Traduce texto visible en una imagen</h2>
                   </div>
                 </div>
 
-                <!-- Idiomas -->
+                <!-- IDIOMAS -->
                 <div class="language-bar">
                   <div>
-                    <label for="imageSourceLanguage"> Origen </label>
+                    <label for="imageSourceLanguage">Origen</label>
 
                     <select id="imageSourceLanguage" class="form-select">
                       <option value="es">Español</option>
-
                       <option value="en">Inglés</option>
                     </select>
                   </div>
 
                   <div>
-                    <label for="imageTargetLanguage"> Destino </label>
+                    <label for="imageTargetLanguage">Destino</label>
 
                     <select id="imageTargetLanguage" class="form-select">
                       <option value="en">Inglés</option>
-
                       <option value="es">Español</option>
                     </select>
                   </div>
                 </div>
 
-                <!-- Carga de imágenes -->
+                <!-- CARGA DE IMÁGENES -->
                 <div class="upload-zone">
                   <i class="bi bi-image"></i>
 
@@ -596,7 +579,7 @@
                   </button>
                 </div>
 
-                <!-- Vista previa -->
+                <!-- VISTA PREVIA -->
                 <div id="imagePreviewWrap" class="image-preview d-none">
                   <img
                     id="imagePreview"
@@ -604,14 +587,14 @@
                   />
                 </div>
 
-                <!-- Procesamiento -->
+                <!-- PROCESAMIENTO -->
                 <div class="processing-panel d-none" id="imageProcessing">
                   <div class="spinner-border spinner-border-sm"></div>
 
                   <span> Analizando texto visible y traduciendo... </span>
                 </div>
 
-                <!-- Resultado -->
+                <!-- RESULTADO -->
                 <div id="imageResult" class="result-card d-none">
                   <div class="result-title">Traducción</div>
 
@@ -624,26 +607,20 @@
       </div>
     </main>
 
-    <!-- =====================================
-         FOOTER
-    ====================================== -->
+    <!-- FOOTER -->
     <footer class="footer py-4 mt-5">
       <div
         class="container d-flex flex-column flex-md-row justify-content-between gap-2"
       >
-        <span> LinguaAI · Traductor Multimodal </span>
-
-        <span> Desarrollado por Álvaro Madrid Morales </span>
+        <span>LinguaAI · Traductor Multimodal</span>
+        <span>Desarrollado por Álvaro Madrid Morales</span>
       </div>
     </footer>
 
-    <!-- =====================================
-         SCRIPTS
-    ====================================== -->
-
+    <!-- SCRIPTS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Mantener configuración de conexión -->
+    <!-- Configuración de conexión: conservar -->
     <script src="js/config.js"></script>
 
     <!-- Lógica general -->
